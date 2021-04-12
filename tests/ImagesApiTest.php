@@ -2,7 +2,9 @@
 
 namespace tests;
 
+use src\Exceptions\ApiException;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use src\Apis\ImagesApi;
@@ -36,5 +38,22 @@ RESPONSE;
         $results = $api->search();
 
         $this->assertIsArray($results);
+    }
+
+    /**
+     * @test
+     */
+    public function we_throw_valid_exception()
+    {
+        $client = $this->createMock(Client::class);
+        $client->method('get')->willThrowException(
+            $this->createMock(GuzzleException::class)
+        );
+
+        $api = new ImagesApi($client);
+
+        $this->expectException(ApiException::class);
+
+        $api->search();
     }
 }
