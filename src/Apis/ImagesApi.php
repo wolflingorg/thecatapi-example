@@ -2,14 +2,18 @@
 
 namespace src\Apis;
 
-use src\Exceptions\ApiException;
 use GuzzleHttp\Client;
+use src\Exceptions\ApiException;
 use GuzzleHttp\Exception\GuzzleException;
 
 class ImagesApi
 {
     private Client $client;
 
+    /**
+     * TODO replace Client with custom interface HttpClientInterface with only one method "get" and create Adapter for Guzzle
+     * @see https://refactoring.guru/design-patterns/adapter
+     */
     public function __construct(Client $client)
     {
         $this->client = $client;
@@ -34,6 +38,7 @@ class ImagesApi
         try {
             $result = $this->client->get($uri)->getBody()->getContents();
 
+            // TODO return specific model (ie Image) instead of raw array
             return json_decode($result);
         } catch (GuzzleException $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
