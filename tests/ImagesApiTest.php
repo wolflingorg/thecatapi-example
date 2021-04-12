@@ -2,11 +2,8 @@
 
 namespace tests;
 
+use src\Clients\HttpClientInterface;
 use src\Exceptions\ApiException;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
 use src\Apis\ImagesApi;
 use PHPUnit\Framework\TestCase;
 
@@ -21,18 +18,8 @@ RESPONSE;
      */
     public function we_can_perform_a_search()
     {
-        $client = $this->createMock(Client::class);
-        $client->expects($this->once())->method('get')->willReturnCallback(function () {
-            $response = $this->createMock(ResponseInterface::class);
-            $response->method('getBody')->willReturnCallback(function () {
-                $stream = $this->createMock(StreamInterface::class);
-                $stream->method('getContents')->willReturn(self::IMAGES_RESPONSE);
-
-                return $stream;
-            });
-
-            return $response;
-        });
+        $client = $this->createMock(HttpClientInterface::class);
+        $client->expects($this->once())->method('get')->willReturn(json_decode(self::IMAGES_RESPONSE));
 
         $api = new ImagesApi($client);
         $results = $api->search();
@@ -45,9 +32,9 @@ RESPONSE;
      */
     public function we_throw_valid_exception()
     {
-        $client = $this->createMock(Client::class);
+        $client = $this->createMock(HttpClientInterface::class);
         $client->method('get')->willThrowException(
-            $this->createMock(GuzzleException::class)
+            $this->createMock(ApiException::class)
         );
 
         $api = new ImagesApi($client);
