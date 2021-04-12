@@ -26,7 +26,7 @@ class ImagesApi
      * @return array
      * @throws ApiException
      */
-    public function search(int $limit = 5, int $page = 10, string $order = 'Desc'): array
+    public function search(int $limit = 5, int $page = 10, string $order = 'Desc'): ?array
     {
         $uri = sprintf(
             'https://api.thecatapi.com/v1/images/search?limit=%d&page=%d&order=%s',
