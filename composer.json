@@ -15,7 +15,8 @@
   "require": {
     "php": "^7.4",
     "ext-json": "*",
-    "guzzlehttp/guzzle": "^7.3"
+    "guzzlehttp/guzzle": "^7.3",
+    "spatie/data-transfer-object": "^2.8"
   },
   "autoload": {
     "psr-4": {

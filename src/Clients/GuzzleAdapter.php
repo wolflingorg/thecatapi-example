@@ -4,7 +4,7 @@ namespace src\Clients;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use src\Exceptions\ApiException;
+use src\Exceptions\ApiHttpClientException;
 
 /**
  * @link https://refactoring.guru/design-patterns/adapter
@@ -24,9 +24,9 @@ class GuzzleAdapter implements HttpClientInterface
     public function get(string $uri): ?array
     {
         try {
-            return json_decode($this->client->get($uri)->getBody()->getContents());
+            return json_decode($this->client->get($uri)->getBody()->getContents(), true);
         } catch (GuzzleException $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
+            throw new ApiHttpClientException($e->getMessage(), $e->getCode());
         }
     }
 

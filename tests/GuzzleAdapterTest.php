@@ -10,7 +10,7 @@ use Psr\Http\Message\StreamInterface;
 use ReflectionClass;
 use ReflectionException;
 use src\Clients\GuzzleAdapter;
-use src\Exceptions\ApiException;
+use src\Exceptions\ApiHttpClientException;
 
 class GuzzleAdapterTest extends TestCase
 {
@@ -95,7 +95,7 @@ class GuzzleAdapterTest extends TestCase
     public function exceptionDataProvider()
     {
         return [
-            ['get', ['uri'], ApiException::class],
+            ['get', ['uri'], ApiHttpClientException::class],
             ['post', ['uri'], \BadMethodCallException::class],
             ['delete', ['uri'], \BadMethodCallException::class],
         ];

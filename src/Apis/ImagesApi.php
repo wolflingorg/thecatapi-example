@@ -2,6 +2,7 @@
 
 namespace src\Apis;
 
+use src\Builders\Images\SearchResultsBuilder;
 use src\Clients\HttpClientInterface;
 use src\Exceptions\ApiException;
 
@@ -30,7 +31,6 @@ class ImagesApi
             $order
         );
 
-        // TODO return specific model (ie Image) instead of raw array
-        return $this->client->get($uri);
+        return (new SearchResultsBuilder($this->client->get($uri)))->build();
     }
 }

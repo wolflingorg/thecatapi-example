@@ -6,6 +6,7 @@ use src\Clients\HttpClientInterface;
 use src\Exceptions\ApiException;
 use src\Apis\ImagesApi;
 use PHPUnit\Framework\TestCase;
+use src\Models\Images\Image;
 
 class ImagesApiTest extends TestCase
 {
@@ -19,12 +20,13 @@ RESPONSE;
     public function we_can_perform_a_search()
     {
         $client = $this->createMock(HttpClientInterface::class);
-        $client->expects($this->once())->method('get')->willReturn(json_decode(self::IMAGES_RESPONSE));
+        $client->expects($this->once())->method('get')->willReturn(json_decode(self::IMAGES_RESPONSE, true));
 
         $api = new ImagesApi($client);
         $results = $api->search();
 
         $this->assertIsArray($results);
+        $this->assertInstanceOf(Image::class, $results[0]);
     }
 
     /**
