@@ -3,15 +3,21 @@
 namespace tests;
 
 use PHPUnit\Framework\TestCase;
+use src\ApiFacade;
+use src\Apis\ImagesApi;
+use src\Clients\HttpClientInterface;
 
 class FacadeTest extends TestCase
 {
+    /**
+     * @test
+     */
     public function we_can_call_facade()
     {
-        $facade = new Facade($client);
+        $client = $this->createMock(HttpClientInterface::class);
 
-        $facade->images()->search();
-        $facade->categories()->get();
-        $facade->favourites()->get();
+        $facade = new ApiFacade($client);
+
+        $this->assertInstanceOf(ImagesApi::class, $facade->images());
     }
 }
